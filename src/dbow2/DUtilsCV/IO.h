@@ -26,7 +26,7 @@
 
 #include <iostream>
 #include <vector>
-#include <opencv/cv.h>
+#include <opencv2/opencv.hpp>
 #ifndef HAVE_OPENCV3
 #include <opencv2/legacy/legacy.hpp>
 #endif // HAVE_OPENCV3

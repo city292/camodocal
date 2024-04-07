@@ -21,7 +21,8 @@
  *
  */
 
-#include <opencv/cv.h>
+#include <opencv2/opencv.hpp>
+#include <opencv2/core/core_c.h>
 #ifdef HAVE_OPENCV3
 #include <opencv2/imgproc/imgproc.hpp>
 #endif // HAVE_OPENCV3

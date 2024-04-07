@@ -5,10 +5,39 @@
 #include <iostream>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
-
+#include <opencv2/imgproc.hpp>
+#include <opencv2/highgui/highgui_c.h>
+#include <opencv2/imgproc/imgproc_c.h>
+#include <opencv2/imgproc/types_c.h>
+#include <opencv2/calib3d/calib3d_c.h>
 #include "camodocal/chessboard/Chessboard.h"
 #include "camodocal/calib/StereoCameraCalibration.h"
 #include "../gpl/gpl.h"
+
+
+
+bool MakeFullPathDir(const std::string& path)
+{
+    if (path.empty())
+    {
+        return false;
+    }
+
+    size_t uPos = path.find_first_of("/\\");
+    while (uPos != std::string::npos)
+    {
+        std::string dir = path.substr(0, uPos + 1);
+        boost::system::error_code ec;
+        boost::filesystem::create_directory(dir, ec);
+
+        uPos = path.find_first_of("/\\", uPos + 1);
+    }
+    boost::system::error_code ec;
+    boost::filesystem::create_directory(path, ec);
+
+    return true;
+
+}
 
 int main(int argc, char** argv)
 {
@@ -101,18 +130,24 @@ int main(int argc, char** argv)
         std::cout << "# INFO: Camera model: Scaramuzza-Omnidirect" << std::endl;
         break;
     }
-
+    std::cout<< "prefixL" <<std::endl;
+    std::cout<< prefixL <<std::endl;
+    std::cout<< prefixR <<std::endl;
+    std::cout<< fileExtension <<std::endl;
+    std::cout<< inputDir <<std::endl;
     // look for images in input directory
     std::vector<std::string> imageFilenamesL, imageFilenamesR;
     boost::filesystem::directory_iterator itr;
     for (boost::filesystem::directory_iterator itr(inputDir); itr != boost::filesystem::directory_iterator(); ++itr)
     {
+        // std::cout<< itr->path().string() <<std::endl;
         if (!boost::filesystem::is_regular_file(itr->status()))
         {
             continue;
         }
 
         std::string filename = itr->path().filename().string();
+        
 
         // check if file extension matches
         if (filename.compare(filename.length() - fileExtension.length(), fileExtension.length(), fileExtension) != 0)
@@ -197,6 +232,11 @@ int main(int argc, char** argv)
 
     std::vector<bool> chessboardFoundL(imageFilenamesL.size(), false);
     std::vector<bool> chessboardFoundR(imageFilenamesR.size(), false);
+    boost::filesystem::path outputdir_left = boost::filesystem::path(outputDir)/ + "chess/left";
+    boost::filesystem::path outputdir_right = boost::filesystem::path(outputDir)/ + "chess/right";
+    MakeFullPathDir(outputdir_left.string());
+    MakeFullPathDir(outputdir_right.string());
+
     for (size_t i = 0; i < imageFilenamesL.size(); ++i)
     {
         imageL = cv::imread(imageFilenamesL.at(i), -1);
@@ -220,13 +260,21 @@ int main(int argc, char** argv)
             cv::Mat sketch;
             chessboardL.getSketch().copyTo(sketch);
 
-            cv::imshow("Image - Left", sketch);
+            // cv::imshow("Image - Left", sketch);
+            std::string filenameL = boost::filesystem::path(imageFilenamesL.at(i)).filename().string();
+            std::string filenameR = boost::filesystem::path(imageFilenamesR.at(i)).filename().string();
+            // std::string filenameL = outputDir + "chess/left/" + filenameL;
+
+            cv::imwrite((outputdir_left / filenameL).string(),sketch);
 
             chessboardR.getSketch().copyTo(sketch);
+            
+            cv::imwrite((outputdir_right / filenameR).string(),sketch);
 
-            cv::imshow("Image - Right", sketch);
 
-            cv::waitKey(50);
+            // cv::imshow("Image - Right", sketch);
+
+            // cv::waitKey(50);
         }
         else if (verbose)
         {
@@ -235,8 +283,7 @@ int main(int argc, char** argv)
         chessboardFoundL.at(i) = chessboardL.cornersFound();
         chessboardFoundR.at(i) = chessboardR.cornersFound();
     }
-    cv::destroyWindow("Image - Left");
-    cv::destroyWindow("Image - Right");
+
 
     if (calibration.sampleCount() < 10)
     {
@@ -266,42 +313,42 @@ int main(int argc, char** argv)
         std::cerr << "# INFO: Wrote calibration files to " << boost::filesystem::absolute(outputDir).string() << std::endl;
     }
 
-    if (viewResults)
-    {
-        std::vector<cv::Mat> cbImagesL, cbImagesR;
-        std::vector<std::string> cbImageFilenamesL;
-        std::vector<std::string> cbImageFilenamesR;
+    // if (viewResults)
+    // {
+    //     std::vector<cv::Mat> cbImagesL, cbImagesR;
+    //     std::vector<std::string> cbImageFilenamesL;
+    //     std::vector<std::string> cbImageFilenamesR;
 
-        for (size_t i = 0; i < imageFilenamesL.size(); ++i)
-        {
-            if (!chessboardFoundL.at(i) || !chessboardFoundR.at(i))
-            {
-                continue;
-            }
+    //     for (size_t i = 0; i < imageFilenamesL.size(); ++i)
+    //     {
+    //         if (!chessboardFoundL.at(i) || !chessboardFoundR.at(i))
+    //         {
+    //             continue;
+    //         }
 
-            cbImagesL.push_back(cv::imread(imageFilenamesL.at(i), -1));
-            cbImageFilenamesL.push_back(imageFilenamesL.at(i));
+    //         cbImagesL.push_back(cv::imread(imageFilenamesL.at(i), -1));
+    //         cbImageFilenamesL.push_back(imageFilenamesL.at(i));
 
-            cbImagesR.push_back(cv::imread(imageFilenamesR.at(i), -1));
-            cbImageFilenamesR.push_back(imageFilenamesR.at(i));
-        }
+    //         cbImagesR.push_back(cv::imread(imageFilenamesR.at(i), -1));
+    //         cbImageFilenamesR.push_back(imageFilenamesR.at(i));
+    //     }
 
         // visualize observed and reprojected points
-        calibration.drawResults(cbImagesL, cbImagesR);
+        // calibration.drawResults(cbImagesL, cbImagesR);
 
-        for (size_t i = 0; i < cbImagesL.size(); ++i)
-        {
-            cv::putText(cbImagesL.at(i), cbImageFilenamesL.at(i), cv::Point(10,20),
-                        cv::FONT_HERSHEY_COMPLEX, 0.5, cv::Scalar(255, 255, 255),
-                        1, CV_AA);
-            cv::imshow("Image - Left", cbImagesL.at(i));
-            cv::putText(cbImagesR.at(i), cbImageFilenamesR.at(i), cv::Point(10,20),
-                        cv::FONT_HERSHEY_COMPLEX, 0.5, cv::Scalar(255, 255, 255),
-                        1, CV_AA);
-            cv::imshow("Image - Right", cbImagesR.at(i));
-            cv::waitKey(0);
-        }
-    }
+        // for (size_t i = 0; i < cbImagesL.size(); ++i)
+        // {
+        //     cv::putText(cbImagesL.at(i), cbImageFilenamesL.at(i), cv::Point(10,20),
+        //                 cv::FONT_HERSHEY_COMPLEX, 0.5, cv::Scalar(255, 255, 255),
+        //                 1, CV_AA);
+        //     // cv::imshow("Image - Left", cbImagesL.at(i));
+        //     cv::putText(cbImagesR.at(i), cbImageFilenamesR.at(i), cv::Point(10,20),
+        //                 cv::FONT_HERSHEY_COMPLEX, 0.5, cv::Scalar(255, 255, 255),
+        //                 1, CV_AA);
+        //     // cv::imshow("Image - Right", cbImagesR.at(i));
+        //     cv::waitKey(0);
+        // }
+    // }
 
     return 0;
 }

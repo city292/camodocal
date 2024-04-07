@@ -27,7 +27,7 @@ protected:
 
 
 // Input should be a vector of n 2D points or a Nx2 matrix
-Mat findEssentialMat( InputArray _points1, InputArray _points2, double focal, Point2d pp, 
+Mat findEssentialMat_camodocal( InputArray _points1, InputArray _points2, double focal, Point2d pp, 
 					int method, double prob, double threshold, int maxIters, OutputArray _mask) 
 {
 	Mat points1, points2; 
@@ -58,14 +58,14 @@ Mat findEssentialMat( InputArray _points1, InputArray _points2, double focal, Po
 	Mat E(3, 3, CV_64F); 
 	CvEMEstimator estimator; 
 
-	CvMat p1 = points1; 
-	CvMat p2 = points2; 
-	CvMat _E = E;  
+	CvMat p1 = *cvGetMat(&points1, NULL, 0); 
+	CvMat p2 = *cvGetMat(&points2, NULL, 0); 
+	CvMat _E = *cvGetMat(&E, NULL, 0);  
 	CvMat* tempMask = cvCreateMat(1, npoints, CV_8U); 
 	
 	assert(npoints >= 5); 
 	threshold /= focal; 
-	if (method == CV_FM_RANSAC)
+	if (method == FM_RANSAC)
 	{
 		estimator.runRANSAC(&p1, &p2, &_E, tempMask, threshold, prob, maxIters); 
 	}

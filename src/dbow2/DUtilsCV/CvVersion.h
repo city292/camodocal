@@ -21,8 +21,8 @@
  *
  */
 
-#include <opencv/cv.h>
-
+// #include <opencv/cv.h>
+#include <opencv2/opencv.hpp>
 #if !CV22 && !CV23 && !CV24
   #if CV_MAJOR_VERSION == 2
     #if CV_MINOR_VERSION == 2

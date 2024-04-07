@@ -303,10 +303,10 @@ InfrastructureCalibration::run(void)
                 std::ostringstream oss;
                 oss << "cam" << frame->cameraId();
 
-                cv::imshow(oss.str(), sketch);
+                // cv::imshow(oss.str(), sketch);
             }
 
-            cv::waitKey(0);
+            // cv::waitKey(0);
         }
     }
 

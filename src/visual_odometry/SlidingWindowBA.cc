@@ -134,8 +134,12 @@ SlidingWindowBA::addFrame(FramePtr& frame)
         if (m_mode == VO)
         {
             cv::Mat E, R_cv, t_cv;
-            E = findEssentialMat(rectImagePoints[0], rectImagePoints[1], 1.0, cv::Point2d(0.0, 0.0),
-                                 CV_FM_RANSAC, 0.99, k_reprojErrorThresh / k_nominalFocalLength, 100, inliers);
+            // Mat findEssentialMat( InputArray points1, InputArray points2, double focal = 1.0, Point2d pp = Point2d(0, 0), 
+			// 		int method = FM_RANSAC, 
+			// 		double prob = 0.999, double threshold = 1, int maxIters = 1000, OutputArray mask = noArray() ); 
+
+            E = findEssentialMat_camodocal(rectImagePoints[0], rectImagePoints[1], 1.0, cv::Point2d(0.0, 0.0),
+                                 FM_RANSAC, 0.99, k_reprojErrorThresh / k_nominalFocalLength, 100, inliers);
             recoverPose(E, rectImagePoints[0], rectImagePoints[1], R_cv, t_cv, 1.0, cv::Point2d(0.0, 0.0), inliers);
 
             if (m_verbose)

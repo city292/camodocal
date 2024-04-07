@@ -24,7 +24,7 @@
 #ifndef __D_CV_TYPES__
 #define __D_CV_TYPES__
 
-#include <opencv/cv.h>
+#include <opencv2/opencv.hpp>
 #include <string>
 
 namespace DUtilsCV

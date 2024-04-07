@@ -19,7 +19,8 @@
 #ifndef __D_T_F_BRIEF__
 #define __D_T_F_BRIEF__
 
-#include <opencv/cv.h>
+#include <opencv2/opencv.hpp>
+#include <opencv2/highgui/highgui_c.h>
 #include <vector>
 #include <string>
 

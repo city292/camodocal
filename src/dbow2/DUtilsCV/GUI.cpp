@@ -23,8 +23,8 @@
 
 #include <vector>
 #include <queue>
-#include <opencv/cv.h>
-#include <opencv/highgui.h>
+#include <opencv2/opencv.hpp>
+#include <opencv2/highgui/highgui_c.h>
 #include <cstdio>
 #include <string>
 #include <sstream>
@@ -68,12 +68,13 @@ int GUI::showImage(const cv::Mat &image, bool autosize,
     name = *hwnd;
   }
   
-  cv::imshow( name, image );
-  char key = cv::waitKey(timeout);
+  // cv::imshow( name, image );
+  // char key = cv::waitKey(timeout);
   
-  if(key == -1) key = NO_KEY;
+  // if(key == -1) key = NO_KEY;
   
-  return key;
+  // return key;
+  return NO_KEY;
 }
 
 // ---------------------------------------------------------------------------

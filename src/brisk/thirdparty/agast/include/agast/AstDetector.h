@@ -21,8 +21,8 @@
 
 #include <vector>
 #include <iostream>
-
-struct CvPoint;
+#include <opencv2/core/types_c.h>
+// struct CvPoint;
 
 namespace agast{
 

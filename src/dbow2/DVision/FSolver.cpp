@@ -23,7 +23,8 @@
  
 #include <vector>
 #include <cmath>
-#include <opencv/cv.h>
+#include <opencv2/opencv.hpp>
+#include <opencv2/core/core_c.h>
 #include "FSolver.h"
 
 #include "DUtils.h"

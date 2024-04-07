@@ -2,7 +2,9 @@
 
 #include <opencv2/calib3d/calib3d.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
-
+#include <opencv2/imgproc/imgproc_c.h>
+#include <opencv2/imgproc/types_c.h>
+#include <opencv2/calib3d/calib3d_c.h>
 #include "ChessboardQuad.h"
 #include "Spline.h"
 
@@ -76,6 +78,13 @@ Chessboard::findChessboardCorners(const cv::Mat& image,
 {
     if (useOpenCV)
     {
+        // bool found = cv::findChessboardCorners(image, patternSize, corners, flags);
+        // if (found){
+        //     cv::cornerSubPix(image, corners, cv::Size(11,11), cv::Size(-1,-1),
+        //     cv::TermCriteria(CV_TERMCRIT_EPS+CV_TERMCRIT_ITER, 30, 0.1));
+        //     return true;
+        // }
+        // return false;
         return cv::findChessboardCorners(image, patternSize, corners, flags);
     }
     else

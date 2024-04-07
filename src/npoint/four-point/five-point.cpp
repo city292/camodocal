@@ -24,7 +24,7 @@ public:
 
 
 // Input should be a vector of n 2D points or a Nx2 matrix
-Mat findEssentialMat( InputArray _points1, InputArray _points2, double focal, Point2d pp, 
+Mat findEssentialMat_camodocal( InputArray _points1, InputArray _points2, double focal, Point2d pp, 
 					int method, double prob, double threshold, OutputArray _mask) 
 {
 	Mat points1, points2; 

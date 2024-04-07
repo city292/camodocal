@@ -23,8 +23,7 @@
 
 #ifndef __D_F_SOLVER__
 #define __D_F_SOLVER__
-
-#include <opencv/cv.h>
+#include <opencv2/opencv.hpp>
 #include <vector>
 
 namespace DVision {

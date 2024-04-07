@@ -1513,9 +1513,9 @@ CameraRigBA::matchFrameToFrame(FramePtr& frame1, FramePtr& frame2,
     }
 
     cv::Mat E, inlierMat;
-    E = findEssentialMat(rpoints1, rpoints2, focalLength1,
+    E = findEssentialMat_camodocal(rpoints1, rpoints2, focalLength1,
                          cv::Point2d(rimg1.cols / 2, rimg1.rows / 2),
-                         CV_FM_RANSAC, 0.99, reprojErrorThresh, 1000, inlierMat);
+                         cv::RANSAC, 0.99, reprojErrorThresh, 1000, inlierMat);
 
     if (cv::countNonZero(inlierMat) < (int)k_minWindowCorrespondences2D2D)
     {
@@ -2682,8 +2682,8 @@ CameraRigBA::estimateAbsoluteGroundHeight(double& zGround) const
                 cv::Mat imageUndist;
                 undistRes.first.download(imageUndist);
 
-                cv::imshow("Undistorted Image", imageUndist);
-                cv::waitKey(2);
+                // cv::imshow("Undistorted Image", imageUndist);
+                // cv::waitKey(2);
 
                 if (cFEPSImageIds.size() == nImagesPerMatch)
                 {

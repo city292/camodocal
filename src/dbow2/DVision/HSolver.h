@@ -24,7 +24,8 @@
 #ifndef __D_H_SOLVER__
 #define __D_H_SOLVER__
 
-#include <opencv/cv.h>
+// #include <opencv/cv.h>
+#include <opencv2/opencv.hpp>
 #include <vector>
 #include "FSolver.h"
 

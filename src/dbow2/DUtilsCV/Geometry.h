@@ -24,8 +24,8 @@
 #ifndef __D_CV_GEOMETRY__
 #define __D_CV_GEOMETRY__
 
-#include <opencv/cv.h>
-
+// #include <opencv/cv.h>
+#include <opencv2/opencv.hpp>
 namespace DUtilsCV
 {
 

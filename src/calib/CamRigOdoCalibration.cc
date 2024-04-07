@@ -461,17 +461,17 @@ CamRigOdoCalibration::pollWindow(boost::asio::io_service* io, bool* stop)
 void
 CamRigOdoCalibration::displayHandler(boost::asio::deadline_timer* timer, bool* stop)
 {
-    for (size_t i = 0; i < m_cameras.size(); ++i)
-    {
-        cv::imshow(m_cameras.at(i)->cameraName(), m_sketches.at(i));
-    }
-    cv::waitKey(2);
+    // for (size_t i = 0; i < m_cameras.size(); ++i)
+    // {
+    //     cv::imshow(m_cameras.at(i)->cameraName(), m_sketches.at(i));
+    // }
+    // cv::waitKey(2);
 
-    if (!(*stop))
-    {
-        timer->expires_at(timer->expires_at() + boost::posix_time::milliseconds(100));
-        timer->async_wait(boost::bind(&CamRigOdoCalibration::displayHandler, this, timer, stop));
-    }
+    // if (!(*stop))
+    // {
+    //     timer->expires_at(timer->expires_at() + boost::posix_time::milliseconds(100));
+    //     timer->async_wait(boost::bind(&CamRigOdoCalibration::displayHandler, this, timer, stop));
+    // }
 }
 
 }

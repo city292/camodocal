@@ -12,7 +12,7 @@ SET (CMAKE_MODULE_PATH "${PROJECT_CMAKE_DIR}" "${CMAKE_MODULE_PATH}" )
 
 # Add custom Install Settings
 INCLUDE(InstallSettings)
-
+add_compile_options(-w)
 
 # Libraries
 set(CAMODOCAL_INCLUDE_INSTALL_PATH "include")
@@ -90,7 +90,7 @@ configure_file(CamOdoCalConfig.h.in ${CMAKE_CURRENT_BINARY_DIR}/CamOdoCalConfig.
 configure_file(CamOdoCalPathConfig.h.in ${CMAKE_CURRENT_BINARY_DIR}/CamOdoCalPathConfig.h)
 
 ############## Include Directories ##############
-
+print("${OpenCV_INCLUDE_DIRS}")
 # Set the search paths for include files
 include_directories(
   # External
@@ -298,4 +298,8 @@ print("")
 
 
 INCLUDE(InstallProjectConfig)
+
+print("${OpenCV_FOUND}")
+print("${OpenCV_LIBS}")
+
 

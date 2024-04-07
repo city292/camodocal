@@ -25,7 +25,7 @@
 #define __D_CV_DRAWING__
 
 #include <vector>
-#include <opencv/cv.h>
+#include <opencv2/opencv.hpp>
 #ifdef HAVE_OPENCV3
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/highgui/highgui.hpp>

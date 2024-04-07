@@ -333,8 +333,8 @@ int main(int argc, char ** argv) {
 			 cv::Scalar(0,255,0), cv::Scalar(0,0,255),
 			std::vector<std::vector<char> >(), cv::DrawMatchesFlags::DRAW_RICH_KEYPOINTS );
 	cv::namedWindow("Matches");
-	cv::imshow("Matches", outimg);
-	cv::waitKey();
+	// cv::imshow("Matches", outimg);
+	// cv::waitKey();
 
 	return 0;
 }

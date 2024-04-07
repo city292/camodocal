@@ -6,7 +6,8 @@
 
 #include "camodocal/camera_models/Camera.h"
 #include "camodocal/sparse_graph/SparseGraph.h"
-
+#include <opencv2/opencv.hpp>
+#include <opencv2/calib3d.hpp>
 namespace camodocal
 {
 

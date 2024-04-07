@@ -11,7 +11,8 @@
 #include "camodocal/EigenUtils.h"
 #include "../visual_odometry/FeatureTracker.h"
 #include "utils.h"
-
+#include <opencv2/imgproc/types_c.h>
+#include <opencv2/imgproc/imgproc_c.h>
 #ifdef VCHARGE_VIZ
 #include "../../../../library/gpl/CameraEnums.h"
 #endif

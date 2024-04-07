@@ -26,7 +26,7 @@
 #include <fstream>
 #include <sstream>
 #include <iomanip>
-#include <opencv/cv.h>
+#include <opencv2/opencv.hpp>
 #include "BundleCamera.h"
 
 using namespace DVision::Bundle;

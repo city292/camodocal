@@ -23,7 +23,8 @@
 
 #include "Transformations.h"
 #include "Types.h"
-#include <opencv/cv.h>
+#include <opencv2/opencv.hpp>
+#include <opencv2/highgui/highgui_c.h>
 
 #ifdef HAVE_OPENCV3
 #include <opencv2/core.hpp>

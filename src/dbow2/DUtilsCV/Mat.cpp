@@ -22,7 +22,8 @@
  */
 
 #include "Mat.h"
-#include <opencv/cv.h>
+#include <opencv2/opencv.hpp>
+#include <opencv2/highgui/highgui_c.h>
 #include <vector>
 
 using namespace std;
