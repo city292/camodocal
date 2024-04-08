@@ -70,7 +70,7 @@ int main(int argc, char** argv)
         ("camera-name-r", boost::program_options::value<std::string>(&cameraNameR)->default_value("camera_right"), "Name of right camera")
         ("opencv", boost::program_options::bool_switch(&useOpenCV)->default_value(false), "Use OpenCV to detect corners")
         ("view-results", boost::program_options::bool_switch(&viewResults)->default_value(false), "View results")
-        ("verbose,v", boost::program_options::bool_switch(&verbose)->default_value(false), "Verbose output")
+        ("verbose,v", boost::program_options::bool_switch(&verbose)->default_value(true), "Verbose output")
         ;
 
     boost::program_options::positional_options_description pdesc;
@@ -136,44 +136,44 @@ int main(int argc, char** argv)
     std::cout<< fileExtension <<std::endl;
     std::cout<< inputDir <<std::endl;
     // look for images in input directory
+    boost::filesystem::path input_path = boost::filesystem::path(inputDir);
+    boost::filesystem::path left_path = input_path / "left";
+    boost::filesystem::path right_path = input_path / "right";
     std::vector<std::string> imageFilenamesL, imageFilenamesR;
     boost::filesystem::directory_iterator itr;
-    for (boost::filesystem::directory_iterator itr(inputDir); itr != boost::filesystem::directory_iterator(); ++itr)
+    for (boost::filesystem::directory_iterator itr(left_path); itr != boost::filesystem::directory_iterator(); ++itr)
     {
-        // std::cout<< itr->path().string() <<std::endl;
+
         if (!boost::filesystem::is_regular_file(itr->status()))
         {
             continue;
         }
 
         std::string filename = itr->path().filename().string();
-        
+
 
         // check if file extension matches
         if (filename.compare(filename.length() - fileExtension.length(), fileExtension.length(), fileExtension) != 0)
         {
             continue;
         }
-
-        // check if prefix matches
-        if (prefixL.empty() || (!prefixL.empty() && (filename.compare(0, prefixL.length(), prefixL) == 0)))
-        {
-            imageFilenamesL.push_back(itr->path().string());
-
-            if (verbose)
-            {
-                std::cerr << "# INFO: Adding " << imageFilenamesL.back() << std::endl;
-            }
+        if (! boost::filesystem::exists(right_path / filename)){
+            continue;
         }
-        if (prefixR.empty() || (!prefixR.empty() && (filename.compare(0, prefixR.length(), prefixR) == 0)))
-        {
-            imageFilenamesR.push_back(itr->path().string());
+        imageFilenamesL.push_back(itr->path().string());
+        imageFilenamesR.push_back((right_path / filename).string());
 
-            if (verbose)
-            {
-                std::cerr << "# INFO: Adding " << imageFilenamesR.back() << std::endl;
-            }
+        // // check if prefix matches
+        // if (prefixL.empty() || (!prefixL.empty() && (filename.compare(0, prefixL.length(), prefixL) == 0)))
+        // {
+        //     imageFilenamesL.push_back(itr->path().string());
+
+        if (verbose)
+        {
+            std::cerr << "# INFO: Adding " << imageFilenamesL.back() << std::endl;
+            std::cerr << "# INFO: Adding " << imageFilenamesR.back() << std::endl;
         }
+
     }
 
     if (imageFilenamesL.empty() || imageFilenamesR.empty())
@@ -197,11 +197,11 @@ int main(int argc, char** argv)
         std::string filenameL = boost::filesystem::path(imageFilenamesL.at(i)).filename().string();
         std::string filenameR = boost::filesystem::path(imageFilenamesR.at(i)).filename().string();
 
-        if (filenameL.compare(prefixL.length(),
-                              filenameL.size() - prefixL.length(),
+        if (filenameL.compare(0,
+                              filenameL.size(),
                               filenameR,
-                              prefixR.length(),
-                              filenameR.size() - prefixR.length()) != 0)
+                              0,
+                              filenameR.size()) != 0)
         {
             matchImages = false;
 
